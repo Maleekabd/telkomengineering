@@ -4,11 +4,19 @@ import Session from 'express-session';
 import userRoutes from '../routes/userRoutes.js';
 import ProductRoutes from '../routes/productRoutes.js';
 import db from '../config/database.js';
+import authRouter from '../routes/authRoutes.js';
+import sequelizeStore from 'connect-session-sequelize';
 
 const APP_PORT = 5000;
-const SESS_SECRET = "w0r03ri2j3e23j4h021ho2kjsdh2h3ne23oj"
+const SESS_SECRET = "w0r03ri2j3e23j4h0asdjoijro3owekdjs221ho2kjsdh2h3ne23oj"
 
 const App = Express();
+const sessionStore = sequelizeStore(Session.Store);
+
+const store = new sessionStore({
+  db: db
+}) 
+
 
 // (async () => {
 //   await db.sync();
@@ -18,6 +26,7 @@ App.use(Session({
   secret: SESS_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: store,
   cookie: {
     secure: 'auto'
   }
@@ -30,6 +39,9 @@ App.use(Cors({
 App.use(Express.json());
 App.use(userRoutes);
 App.use(ProductRoutes);
+App.use(authRouter);
+
+// store.sync();
 
 App.listen(APP_PORT, function () {
   console.log(`server up and running in port ${APP_PORT}`);

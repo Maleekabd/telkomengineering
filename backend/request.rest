@@ -1,0 +1,27 @@
+//create a user
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "malik@gmail.com",
+  "password": "111"
+}
+
+###
+GET http://localhost:5000/users/3b02ca00-1402-4a57-829c-a805e0873761
+
+###
+DELETE http://localhost:5000/logout
+
+###
+PATCH  http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "name": "malik updated",
+  "email": "malik@gmail.com",
+  "password": "",
+  "confPassword" : "",
+  "role": "admin"
+}
