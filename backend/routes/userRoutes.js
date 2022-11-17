@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyUser, adminOnly } from '../middleware/authUser.js';
 import {
   getUser,
   getUserById,
@@ -8,9 +9,8 @@ import {
 } from '../controllers/users.js'
 const router = express.Router();
 
-import { verifyUser, adminOnly } from '../middleware/authUser.js';
 
-router.get('/users', verifyUser, adminOnly, getUser);
+router.get('/users', verifyUser,adminOnly, getUser);
 router.get('/users/:id', verifyUser, adminOnly, getUserById);
 router.post('/users', verifyUser, adminOnly, createUser);
 router.patch('/users/:id', verifyUser, adminOnly, updateUser);

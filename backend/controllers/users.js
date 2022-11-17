@@ -2,13 +2,14 @@ import User from "../models/userModels.js";
 import argon2 from 'argon2';
 
 export const getUser = async (req, res) => {
-  try {
-    const response = await User.findAll();
-    return res.status(200).json(response);
-  } catch (error) {
-    res.status(500).json()
+  const response = await User.findAll();
+  if (response) {
+    return res.status(200).json({ response })
+  } else {
+    return res.status(500).json({ msg: error.message });
   }
 }
+
 export const getUserById = async (req, res) => {
   try {
     const response = await User.findOne({
@@ -16,16 +17,18 @@ export const getUserById = async (req, res) => {
         uuid: req.params.id
       }
     });
-    res.status(200).json(response)
+    return res.status(200).json(response)
+
   } catch (error) {
-    res.status(500).json({ msg: error.message })
+    return res.status(500).json({ msg: error.message })
   }
 }
+
 export const createUser = async (req, res) => {
-  const { name, email, password, confpassword, role } = req.body;
-  if (password !== confpassword) {
+  const { name, email, password, confPassword, role } = req.body;
+  if (password !== confPassword)
     return res.status(400).json({ msg: "password dan confirm password nya tidak sama banh" });
-  }
+
   const hashPassword = await argon2.hash(password);
   try {
     await User.create({
@@ -33,10 +36,10 @@ export const createUser = async (req, res) => {
       email: email,
       password: hashPassword,
       role: role
-    });
-    res.status(201).json({ msg: "account was created" })
+    })
+    return res.status(201).json({ msg: "account was created" })
   } catch (error) {
-    res.status(400).json({ msg: error.message})
+    return res.status(400).json({ msg: "gagal membuat akun" })
   }
 }
 export const updateUser = async (req, res) => {
@@ -75,7 +78,7 @@ export const updateUser = async (req, res) => {
 
     res.status(200).json({ msg: "password telah diupdate" })
   } catch (error) {
-    res.status(400).json({ msg: error.message})
+    res.status(400).json({ msg: error.message })
   }
 }
 

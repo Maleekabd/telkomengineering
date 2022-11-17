@@ -1,6 +1,6 @@
-import Express from 'express';
+import express from 'express';
 import Cors from 'cors';
-import Session from 'express-session';
+import session from 'express-session';
 import userRoutes from '../routes/userRoutes.js';
 import ProductRoutes from '../routes/productRoutes.js';
 import db from '../config/database.js';
@@ -10,8 +10,8 @@ import sequelizeStore from 'connect-session-sequelize';
 const APP_PORT = 5000;
 const SESS_SECRET = "w0r03ri2j3e23j4h0asdjoijro3owekdjs221ho2kjsdh2h3ne23oj"
 
-const App = Express();
-const sessionStore = sequelizeStore(Session.Store);
+const App = express();
+const sessionStore = sequelizeStore(session.Store);
 
 const store = new sessionStore({
   db: db
@@ -22,7 +22,7 @@ const store = new sessionStore({
 //   await db.sync();
 // })();
 
-App.use(Session({
+App.use(session({
   secret: SESS_SECRET,
   resave: false,
   saveUninitialized: true,
@@ -36,7 +36,7 @@ App.use(Cors({
   origin: 'http://localhost:5000', //origin itu adalah domain yang kita izin kan untuk mengkses API
 }));
 
-App.use(Express.json());
+App.use(express.json());
 App.use(userRoutes);
 App.use(ProductRoutes);
 App.use(authRouter);

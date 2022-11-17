@@ -4,12 +4,12 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "email": "malik@gmail.com",
+  "email": "user@gmail.com",
   "password": "111"
 }
 
 ###
-GET http://localhost:5000/users/3b02ca00-1402-4a57-829c-a805e0873761
+GET http://localhost:5000/users
 
 ###
 DELETE http://localhost:5000/logout
@@ -23,5 +23,31 @@ Content-Type: application/json
   "email": "malik@gmail.com",
   "password": "",
   "confPassword" : "",
-  "role": "admin"
+  "role": "user"
+}
+
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "name": "malik2",
+  "email": "malik2@gmail.com",
+  "password": "123",
+  "confpassword" : "123",
+  "role": "user"
+}
+
+
+###
+GET http://localhost:5000/products
+
+
+###
+POST http://localhost:5000/products
+Content-Type: application/json
+
+{
+  "name" : "pedang",
+  "price" : 100001
 }

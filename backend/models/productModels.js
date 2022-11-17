@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import db from '../config/database.js';
-import User from './userModels.js';
+import Users from './userModels.js';
 
 const { DataTypes } = Sequelize;
 
@@ -31,7 +31,7 @@ const products = db.define('Products', {
   freezeTableName: true,
 })
 
-User.hasMany(products);
-products.belongsTo(User, {foreignKey: 'userId'})
+Users.hasMany(products);
+products.belongsTo(Users, {foreignKey: 'userId'})
 
 export default products; 

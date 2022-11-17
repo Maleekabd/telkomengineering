@@ -1,22 +1,21 @@
 import products from "../models/productModels.js";
-import argon2 from 'argon2';
 import User from "../models/userModels.js";
 
 export async function get_products(req, res) {
   try {
-    let response;
+    let response
     if (req.role === "admin") {
       response = await products.findAll({
-        include : [{
+        include: [{
           model: User
         }]
       })
-    }else {
+    } else {
       response = await products.findAll({
         where: {
-          userId : req.userId
+          userId: req.userId
         },
-        include : [{
+        include: [{
           model: User
         }]
       })
@@ -30,20 +29,45 @@ export async function get_products_by_Id(req, res) {
 
 }
 export async function create_products(req, res) {
-  const {name, price} = req.body;
+  const { name, price } = req.body;
   try {
     await products.create({
       name: name,
-      price : price,
+      price: price,
       userId: req.userId
     })
-    res.status(201).json({msg:"product created successfully"})
+    return res.status(201).json({ msg: "product created successfully" })
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ msg: error.message })
   }
 }
-export function update_products(req, res) {
+export async function update_products(req, res) {
+  try {
+    const product = await products.update({
+      where: {
+        uuid: req.params.id
+      }
+    })
+    if (!product) {
+      return res.status(404).json({ msg: "data tidak ditemukan" })
+    }
+    const {name, price} = req.body
+    if (req.role === "admin") {
+    await products.update({name, price},{
+      where: {
+        id : product.id
+      }
+    })
+    }else {
+      await products.update({name, price},{
+        where: {
+          id : product.id
+        }
+      })
+    }
+  } catch (error) {
 
+  }
 }
 export function delete_products(req, res) {
 

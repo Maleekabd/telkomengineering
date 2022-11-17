@@ -1,26 +1,6 @@
 import User from "../models/userModels.js";
 import argon2 from "argon2";
 
-export const register = async (req, res) => {
-  const { name, email, password, confpassword, role } = req.body;
-  if (password != confpassword) {
-    return res.status(400).json({ msg: "password dan confirm password nya tidak sama banh" });
-
-  }
-  const hashPassword = await argon2.hash(password);
-  try {
-    await User.create({
-      name: name,
-      email: email,
-      password: hashPassword,
-      role: role
-    });
-    res.status(201).json({ msg: "account was created" })
-  } catch (error) {
-    res.status(400).json({ msg: "masih ada yang salah" })
-  }
-}
-
 export const login = async (req, res) => {
   const user = await User.findOne({
     //where adalah perintah untuk mencari data di database
