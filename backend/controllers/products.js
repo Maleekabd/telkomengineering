@@ -20,7 +20,7 @@ export async function get_products(req, res) {
         }]
       })
     }
-    res.status(200).json()
+    res.status(200).json({})
   } catch (error) {
     console.log(error);
   }

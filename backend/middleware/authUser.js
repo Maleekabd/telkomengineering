@@ -1,7 +1,6 @@
 import User from "../models/userModels.js";
 
-
-export const verifyUser = async (req, res, next) => {
+export const verifyUser = async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ msg: "Mohon login ke akun anda" })
   }
@@ -15,13 +14,11 @@ export const verifyUser = async (req, res, next) => {
   res.status(200).json(user)
   req.userId = user.id;
   req.role = user.role;
-  next();
 }
 
-export const adminOnly = async (req, res, next) => {
-
+export const adminOnly = async (req, res) => {
   const user = await User.findOne({
-    //where adalah perintah untuk mencari data di database
+    attributes : ['uuid', 'name', 'email', 'role'],
     where: {
       uuid: req.session.userId
     }
@@ -32,5 +29,4 @@ export const adminOnly = async (req, res, next) => {
   if (user.role !== "admin") {
     return res.status(403).json({ msg: "akses terlarang" });
   }
-  next();
 }
